@@ -40,3 +40,8 @@ $ mapbox-grid-copy --parts 12 --part 4 \
     "/path/to/mb.mbtiles" \
     "s3://my-bucket/key/{z}/{x}/{y}"
 ```
+
+The script will exit with the following codes:
+- `0`: successfully completed or there were no grids to copy
+- `1`: an unexpected error occurred
+- `3`: the mbtiles file was invalid
