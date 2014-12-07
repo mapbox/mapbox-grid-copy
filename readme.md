@@ -2,7 +2,7 @@
 
 Copy UTFGrids from mbtiles files to S3
 
-## Usage
+## Usage in Javascript
 
 ```javascript
 var gridCopy = require('mapbox-grid-copy');
@@ -26,6 +26,8 @@ gridCopy(mbtiles, s3, options, function(err) {
 - part: which parallel part to process
 - concurrency: number of concurrent PUT requests to S3
 - batchsize: number of grids to pull from mbtiles into memory at a time
+
+## Usage in shell scripts
 
 ```sh
 $ npm install -g mapbox-grid-copy
