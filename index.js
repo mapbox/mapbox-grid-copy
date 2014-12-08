@@ -14,6 +14,8 @@ module.exports = function(filepath, s3url, options, callback) {
     options = {};
   }
 
+  s3url = /\.grid\.json$/.test(s3url) ? s3url.slice(0, -10) : s3url;
+
   var q = queue(1);
   var mbtiles, s3, grids, warnings = [];
 
@@ -30,7 +32,7 @@ module.exports = function(filepath, s3url, options, callback) {
       if (err) return next(err);
       s3 = dst;
       s3.data.grids = [
-        s3urls.convert(s3url, 'bucket-in-host').replace('https:', 'http:')
+        s3urls.convert(s3url, 'bucket-in-host').replace('https:', 'http:') + '.grid.json'
       ];
       next();
     });

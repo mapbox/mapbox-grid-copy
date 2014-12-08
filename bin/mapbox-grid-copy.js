@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var args = require('minimist')(process.argv.slice(2));
+var path = require('path');
 var gridCopy = require('..');
 
 if (args._.length < 2) {
@@ -10,7 +11,7 @@ if (args._.length < 2) {
 
 if (!args.quiet) args.logStream = process.stdout;
 
-gridCopy(args._[0], args._[1], args, function(err) {
+gridCopy(path.resolve(args._[0]), args._[1], args, function(err) {
   if (err && err.code === 'EINVALID') {
     console.error(err);
     process.exit(3);
