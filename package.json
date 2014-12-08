@@ -6,6 +6,9 @@
   "scripts": {
     "test": "tape test/*.test.js"
   },
+  "bin": {
+    "mapbox-grid-copy": "bin/mapbox-grid-copy.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mapbox/mapbox-grid-copy"
