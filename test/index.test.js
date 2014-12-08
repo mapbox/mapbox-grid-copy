@@ -119,7 +119,7 @@ test('executable copies handles no grids silently', function(t) {
   });
 });
 
-test('executable copies grids with blank args', function(t) {
+test('executable copies grids with bogus args', function(t) {
   var fixture = path.resolve(__dirname, 'fixtures', 'valid.grids.mbtiles');
   var cmd = path.resolve(__dirname, '..', 'bin', 'mapbox-grid-copy.js');
   var url = [
@@ -130,7 +130,7 @@ test('executable copies grids with blank args', function(t) {
     'grids.blank.exe/{z}/{x}/{y}'
   ].join('/');
 
-  exec([ cmd, fixture, url, '--parts=', '--part='].join(' '), function(err, stdout, stderr) {
+  exec([ cmd, fixture, url, '--parts', '--part hibbity'].join(' '), function(err, stdout, stderr) {
     t.ifError(err, 'copied grids');
     t.equal(stdout, 'Copied grids to S3!\n', 'expected stdout');
     t.equal(stderr, '', 'no stderr');

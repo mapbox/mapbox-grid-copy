@@ -10,10 +10,10 @@ if (args._.length < 2) {
 }
 
 var options = {};
-if (args.part) options.part = args.part;
-if (args.parts) options.parts = args.parts;
-if (args.concurrency) options.concurrency = args.concurrency;
-if (args.batchsize) options.batchsize = args.batchsize;
+if (!isNaN(args.part)) options.part = args.part;
+if (!isNaN(args.parts)) options.parts = args.parts;
+if (!isNaN(args.concurrency)) options.concurrency = args.concurrency;
+if (!isNaN(args.batchsize)) options.batchsize = args.batchsize;
 if (!args.quiet) options.logStream = process.stdout;
 
 gridCopy(path.resolve(args._[0]), args._[1], options, function(err) {
