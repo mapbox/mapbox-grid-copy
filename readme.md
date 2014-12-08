@@ -45,3 +45,13 @@ The script will exit with the following codes:
 - `0`: successfully completed or there were no grids to copy
 - `1`: an unexpected error occurred
 - `3`: the mbtiles file was invalid
+
+## Tests
+
+Tests actually put sample grids to S3. Make sure that your shell is authenticated with valid AWS credentials.
+
+You can bring your own bucket by specifying a `TestBucket` environment variable before running the test script. Otherwise, the script will attempt to put grids to a private Mapbox bucket.
+
+```
+npm test
+```

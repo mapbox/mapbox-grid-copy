@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/mapbox/mapbox-grid-copy",
   "devDependencies": {
+    "aws-sdk": "^2.0.30",
+    "s3prefixed": "0.0.3",
+    "split": "^0.3.2",
     "tape": "^3.0.3"
   },
   "dependencies": {

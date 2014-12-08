@@ -1,7 +1,7 @@
 var MBTiles = require('mbtiles');
 var S3 = require('tilelive-s3');
 var tilelive = require('tilelive');
-var copy = require('../lib/copy');
+var gridCopy = require('./lib/grid-copy');
 var queue = require('queue-async');
 var s3urls = require('s3urls');
 
@@ -14,31 +14,32 @@ module.exports = function(filepath, s3url, options, callback) {
     options = {};
   }
 
-  s3url = s3urls.convert(s3url, 's3');
-
   var q = queue(1);
   var mbtiles, s3, grids, warnings = [];
 
   q.defer(function(next) {
-    new MBTiles(filepath, function(err, src) {
+    tilelive.load('mbtiles://' + filepath, function(err, src) {
       if (err) return next(err);
-      mbtiles = s3;
+      mbtiles = src;
       next();
     });
   });
 
   q.defer(function(next) {
-    new S3(s3url, function(err, dst) {
+    tilelive.load(s3urls.convert(s3url, 's3'), function(err, dst) {
       if (err) return next(err);
       s3 = dst;
+      s3.data.grids = [
+        s3urls.convert(s3url, 'bucket-in-host').replace('https:', 'http:')
+      ];
       next();
     });
   });
 
   q.defer(function(next) {
-    mbtiles._db.get('SELECT COUNT(1) AS count, MAX(LENGTH(grid)) AS size, zoom_level as z FROM grids', function(err, row) {
+    mbtiles._db.get('SELECT COUNT(*) AS count FROM grids', function(err, row) {
       if (err && err.code === 'SQLITE_CORRUPT') return next(invalid(err));
-      if (fatal(err)) return next(err);
+      if (fatal(err)) return next(fatal(err));
       if (!row || !row.count) return next({ code: 'NOGRIDS' });
       grids = row.count;
       next();
@@ -46,22 +47,35 @@ module.exports = function(filepath, s3url, options, callback) {
   });
 
   q.defer(function(next) {
+    var url = s3urls.convert(s3url, 'bucket-in-host')
+      .replace('https:', 'http:')
+      .split('/').reduce(function(memo, bit) {
+        if (bit !== '{z}' && bit !== '{x}' && bit !== '{y}') memo.push(bit);
+        return memo;
+      }, []).join('/');
+
     var opts = {
       part: options.part,
       parts: options.parts,
-      s3url: s3url,
+      s3url: url,
       gridCount: grids,
       warn: function(msg) {
-        if (options.logStream) options.logStream.write(msg);
+        if (options.logStream) options.logStream.write(msg.toString() + '\n');
       },
       concurrency: options.concurrency || Math.ceil(require('os').cpus().length * 16),
       batchsize: options.batchsize || 10e3
     };
 
-    copy(opts, mbtiles, s3, next);
+    gridCopy(opts, mbtiles, s3, next);
   });
 
-  q.await(callback);
+  q.await(function(err) {
+    mbtiles.close(function() {
+      s3.close(function() {
+        callback(err);
+      });
+    });
+  });
 };
 
 function fatal(err) {

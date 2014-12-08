@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var args = require('minimist')(process.argv.slice(2));
-var copy = require('..');
+var gridCopy = require('..');
 
 if (args._.length < 2) {
   console.error('Must provide a source mbtiles file and a destination S3 URL');
@@ -10,7 +10,7 @@ if (args._.length < 2) {
 
 if (!args.quiet) args.logStream = process.stdout;
 
-copy(args._[0], args._[1], args, function(err) {
+gridCopy(args._[0], args._[1], args, function(err) {
   if (err && err.code === 'EINVALID') {
     console.error(err);
     process.exit(3);
@@ -25,4 +25,7 @@ copy(args._[0], args._[1], args, function(err) {
     console.error(err);
     process.exit(1);
   }
+
+  if (!args.quiet) console.log('Copied grids to S3!');
+  process.exit(0);
 });
