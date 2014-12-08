@@ -130,7 +130,7 @@ test('executable copies grids with bogus args', function(t) {
     'grids.blank.exe/{z}/{x}/{y}'
   ].join('/');
 
-  exec([ cmd, fixture, url, '--parts', '--part hibbity'].join(' '), function(err, stdout, stderr) {
+  exec([ cmd, fixture, url, '--parts=', '--part'].join(' '), function(err, stdout, stderr) {
     t.ifError(err, 'copied grids');
     t.equal(stdout, 'Copied grids to S3!\n', 'expected stdout');
     t.equal(stderr, '', 'no stderr');
