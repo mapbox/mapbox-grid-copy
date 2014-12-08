@@ -119,6 +119,29 @@ test('executable copies handles no grids silently', function(t) {
   });
 });
 
+test('executable copies grids with blank args', function(t) {
+  var fixture = path.resolve(__dirname, 'fixtures', 'valid.grids.mbtiles');
+  var cmd = path.resolve(__dirname, '..', 'bin', 'mapbox-grid-copy.js');
+  var url = [
+    's3:/',
+    bucket,
+    '{prefix}/_grid-tests',
+    crypto.randomBytes(16).toString('hex'),
+    'grids.blank.exe/{z}/{x}/{y}'
+  ].join('/');
+
+  exec([ cmd, fixture, url, '--parts=', '--part='].join(' '), function(err, stdout, stderr) {
+    t.ifError(err, 'copied grids');
+    t.equal(stdout, 'Copied grids to S3!\n', 'expected stdout');
+    t.equal(stderr, '', 'no stderr');
+    gridCount(url, function(err, count) {
+      t.ifError(err, 'counted grids');
+      t.equal(count, 4, 'all grids written');
+      t.end();
+    });
+  });
+});
+
 function gridCount(s3url, callback) {
   var s3 = new AWS.S3();
   var count = 0;
