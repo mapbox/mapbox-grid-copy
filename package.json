@@ -26,7 +26,7 @@
     "tape": "^3.0.3"
   },
   "dependencies": {
-    "mbtiles": "^0.7.5",
+    "mbtiles": "^0.7.6",
     "minimist": "^1.1.0",
     "queue-async": "^1.0.7",
     "s3urls": "^1.3.0",
