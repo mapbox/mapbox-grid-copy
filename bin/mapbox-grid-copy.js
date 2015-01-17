@@ -18,7 +18,7 @@ if (!args.quiet) options.logStream = process.stdout;
 
 gridCopy(path.resolve(args._[0]), args._[1], options, function(err) {
   if (err && err.code === 'EINVALID') {
-    console.error(err);
+    console.error(err.stack);
     process.exit(3);
   }
 
