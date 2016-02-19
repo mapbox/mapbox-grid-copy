@@ -73,9 +73,7 @@ module.exports = function(filepath, s3url, options, callback) {
 
   q.await(function(err) {
     mbtiles.close(function() {
-      s3.close(function() {
-        callback(err);
-      });
+      callback(err);
     });
   });
 };
