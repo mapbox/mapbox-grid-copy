@@ -1,3 +1,7 @@
+## 1.2.4
+
+- Updated several dependencies that are now under the mapbox npm namesapce
+
 ## 1.2.3
 
 - Update mbtiles to ~0.9.0
