@@ -41,28 +41,15 @@ module.exports = {
         ]
       }
     },
-    "MapboxGridCopyTestKey": {
-      "Type": "AWS::IAM::AccessKey",
-      "Properties": {
-        "UserName": {
-          "Ref": "MapboxGridCopyTestUser"
-        }
+    AccessKey: {
+      Type: 'AWS::IAM::AccessKey',
+      Properties: {
+        UserName: cf.ref('MapboxGridCopyTestUser')
       }
     }
   },
-  "Outputs": {
-    "TestAccessKeyId": {
-      "Value": {
-        "Ref": "MapboxGridCopyTestKey"
-      }
-    },
-    "TestSecretAccessKey": {
-      "Value": {
-        "Fn::GetAtt": [
-          "MapboxGridCopyTestKey",
-          "SecretAccessKey"
-        ]
-      }
-    }
+  Outputs: {
+    AccessKeyId: { Value: cf.ref('AccessKey') },
+    SecretAccessKey: { Value: cf.getAtt('AccessKey', 'SecretAccessKey') }
   }
 };
