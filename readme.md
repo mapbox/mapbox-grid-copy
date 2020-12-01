@@ -1,5 +1,7 @@
 # mapbox-grid-copy
 
+[![Build Status](https://travis-ci.com/mapbox/mapbox-grid-copy.svg?branch=master)](https://travis-ci.com/mapbox/mapbox-grid-copy)
+
 Copy UTFGrids from mbtiles files to S3
 
 ## Usage in Javascript
