@@ -1,6 +1,6 @@
-# mapbox-grid-copy
+⚠️ This repository is no longer actively maintained by Mapbox.
 
-[![Build Status](https://travis-ci.com/mapbox/mapbox-grid-copy.svg?branch=master)](https://travis-ci.com/mapbox/mapbox-grid-copy)
+# mapbox-grid-copy
 
 Copy UTFGrids from mbtiles files to S3
 
